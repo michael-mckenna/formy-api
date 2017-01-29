@@ -1,0 +1,30 @@
+{
+  "name": "formy-api",
+  "version": "0.5.0",
+  "description": "An API used for users filling out forms",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michael-mckenna/formy-api.git"
+  },
+  "author": "Michael D. McKenna",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/michael-mckenna/formy-api/issues"
+  },
+  "homepage": "https://github.com/michael-mckenna/formy-api#readme",
+  "dependencies": {
+      "bcrypt": "^1.0.2",
+      "body-parser": "^1.13.3",
+      "crypto-js": "^3.1.9-1",
+      "express": "^4.13.3",
+      "jsonwebtoken": "^7.2.1",
+      "pg": "^4.4.1",
+      "sequelize": "^3.5.1",
+      "sqlite3": "^3.1.8",
+      "underscore": "^1.8.3"
+  }
+}
