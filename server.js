@@ -57,7 +57,8 @@ app.get('/forms/:id', middleware.requireAuthentication, function (req, res) {
 
 // POST /forms
 app.post('/forms', middleware.requireAuthentication, function (req, res) {
-    var body = _.pick(req.body, 'questions');
+    var body = [_.pick(req.body, 'questions')];
+    var userId = req.user.get('id') || null;
 
     body.forEach(function (question) {
         db.question.create(question);
