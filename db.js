@@ -29,6 +29,6 @@ db.form.belongsTo(db.user);
 db.user.hasMany(db.form);
 
 db.form.hasMany(db.question);
-db.question.belongsTo(db.form)
+db.question.belongsTo(db.form);
 
 module.exports = db;

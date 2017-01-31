@@ -25,9 +25,9 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
         userId: req.user.get('id')
     };
 
-    if (query.hasOwnProperty('userId') && typeof query.userId === 'number') {
-        where.userId = query.userId
-    }
+    // if (query.hasOwnProperty('userId') && typeof query.userId === 'number') {
+    //     where.userId = query.userId
+    // }
 
     db.form.findAll({where: where}).then(function (forms) {
         res.json(forms);
@@ -40,13 +40,15 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
 app.get('/forms/:id', middleware.requireAuthentication, function (req, res) {
     var formId = parseInt(req.params.id, 10);
 
-    db.todo.findOne({
+    db.form.findOne({
         where : {
             id: formId,
         }
-    }).then(function (todo) {
-        if (!!todo) { //an empty object is truthy, nil is falsy
-            res.json(todo.toJSON());
+    }).then(function (form) {
+        if (form) {
+            form.getQuestions().then(function (questions) {
+                res.json(questions.toJSON());
+            });
         } else {
             res.status(404).send();
         }
