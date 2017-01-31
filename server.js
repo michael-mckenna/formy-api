@@ -31,27 +31,30 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
 
     db.form.findAll({where: where}).then(function (forms) {
         fullJSON = [];
-        console.log(forms.length);
-        for(var i = 0; i < forms.length; i++) {
-            var form = forms[i];
+        console.log("here 1");
+
+        forms.forEach(function (form) {
             form.getQuestions().then(function (questions) {
                 var questionsJSON = [];
+                var i = 0;
                 questions.forEach(function (question) {
                     questionsJSON.push(question.toJSON());
-                });
-                var id = form.id.toString();
-                var JSONObject =
-                {
-                    id: questionsJSON
-                }
-                fullJSON.push(JSONObject);
-                console.log(i);
-                if (i === (forms.length - 1)) {
-                    res.json(fullJSON);
-                }
-            });
-        }
 
+                    var id = form.id.toString();
+                    var JSONObject =
+                    {
+                        id: questionsJSON
+                    }
+                    console.log("here 2");
+                    fullJSON.push(JSONObject);
+                    if (i === questions.length - 1) {
+                        res.json(fullJSON);
+                    } else {
+                        ++i;
+                    }
+                });
+            });
+        });
     }, function (e) {
         res.status(500).send();
     });
