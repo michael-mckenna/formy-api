@@ -61,12 +61,10 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
     var userId = req.user.get('id') || null;
     var questions = [];
 
-    console.log('The question count is: ' + body.questions.length);
     for(var i = 0; i < body.questions.length; i++) {
         var question = body.questions[i];
         var attributes = {};
         if (question.hasOwnProperty('type')) {
-            console.log('THE TYPE IS: ' + question.type);
             attributes.type = question.type;
         }
 
@@ -90,16 +88,15 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
         req.user.addForm(form).then(function () {
             //call reload updates the userId property on the form object
             //if we leave off reload, a call to the userId property will be null
-            form.setQuestions(questions).then(function () {
-                console.log('TESTING WORD')
-                return form.reload();
-            }), function (e) {
-                console.log('FUCKKKKK')
-                res.status(400).json(e);
-            }
+            return form.reload();
         }).then(function (form) {
-            console.log('Successfully saved form and added relationships');
-            res.json(form.toJSON());
+            console.log('QUESTIONS LENGTH: ' + questions.legnth);
+            form.setQuestions(questions).then(function () {
+                return form.reload();
+            }).then(function (form) {
+                console.log('SUCCESSFULLY ADDED QUESTIONS TO FORM');
+                res.json(form.toJSON());
+            });
         });
     }, function (e) {
         res.status(400).json(e);
