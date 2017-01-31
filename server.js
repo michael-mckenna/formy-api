@@ -22,7 +22,7 @@ app.get('/', function (req, res) {
 app.get('/forms', middleware.requireAuthentication, function (req, res) {
     var query = req.query;
     var where = {
-        userId: null
+        userId: req.user.get('id');
     };
 
     if (query.hasOwnProperty('userId') && typeof query.userId === 'number') {
