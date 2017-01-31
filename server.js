@@ -79,6 +79,7 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
         db.question.create(attributes).then(function (question) {
             console.log("Successfully created question")
             questions.push(question);
+            console.log('QUESTIONS LENGTH ' + questions.length);
         }), function (e) {
             return res.status(400).json(e);
         }
