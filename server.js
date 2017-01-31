@@ -60,7 +60,7 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
     var body = req.body;
     var userId = req.user.get('id') || null;
 
-    console.log('The question count is: ' + body.questions.count);
+    console.log('The question count is: ' + body.questions.length);
     for (var question in body.questions) {
         var attributes = {};
         if (question.hasOwnProperty('type')) {
