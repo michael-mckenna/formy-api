@@ -30,7 +30,23 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
     // }
 
     db.form.findAll({where: where}).then(function (forms) {
-        res.json(forms);
+        fullJSON = [];
+
+        forms.forEach(function (form) {
+            form.getQuestions().then(function (questions) {
+                var questionsJSON = [];
+                questions.forEach(function (question) {
+                    questionsJSON.push(question.toJSON());
+                });
+                var id = form.id.toString();
+                var JSONObject =
+                {
+                    id: questionsJSON
+                }
+                fullJSON.push(JSONObject);
+            });
+        });
+        res.json(fullJSON);
     }, function (e) {
         res.status(500).send();
     });
