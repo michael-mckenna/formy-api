@@ -62,8 +62,25 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
     var userId = req.user.get('id') || null;
 
     console.log(body);
-    for (var key in questions) {
-        console.log("Got here");
+    for (var question in questions) {
+        var attributes = {};
+        if (question.hasOwnProperty('type')) {
+            attributes.type = question.type;
+        }
+
+        if (question.hasOwnProperty('options')) {
+            attributes.options = question.options;
+        }
+
+        if (question.hasOwnProperty('answer')) {
+            attributes.answer = question.answer;
+        }
+
+        db.question.create(attributes).then(function (question) {
+            console.log("successfully created question")
+        }), function (e) {
+            res.status(400).json(e);
+        }
     }
 
     db.form.create(body).then(function (form) {
@@ -72,9 +89,7 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
             //if we leave off reload, a call to the userId property will be null
             return form.reload();
         }).then(function (form) {
-            form.setQuestions(body).then(function () {
-                res.json(form.toJSON());
-            })
+            res.json(form.toJSON());
         });
     }, function (e) {
         res.status(400).json(e);
