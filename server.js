@@ -31,8 +31,8 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
 
     db.form.findAll({where: where}).then(function (forms) {
         fullJSON = [];
-        console.log("here 1");
-        forms.forEach(function (form) {
+        for(var i = 0; i < forms.length; i++) {
+            var form = forms[i];
             form.getQuestions().then(function (questions) {
                 var questionsJSON = [];
                 questions.forEach(function (question) {
@@ -45,10 +45,12 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
                 }
                 console.log("here 2");
                 fullJSON.push(JSONObject);
+                if (i === forms.length - 1) {
+                    res.json(fullJSON);
+                }
             });
-        });
-        console.log("here 3");
-        res.json(fullJSON);
+        }
+
     }, function (e) {
         res.status(500).send();
     });
