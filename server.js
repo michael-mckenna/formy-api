@@ -58,11 +58,10 @@ app.get('/forms/:id', middleware.requireAuthentication, function (req, res) {
 // POST /forms
 app.post('/forms', middleware.requireAuthentication, function (req, res) {
     var body = req.body;
-    var questions = _.pick(body, 'questions');
     var userId = req.user.get('id') || null;
 
-    console.log(questions);
-    for (var question in questions) {
+    console.log(body.questions);
+    for (var question in body.questions) {
         console.log(question);
         var attributes = {};
         if (question.hasOwnProperty('type')) {
