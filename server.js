@@ -31,7 +31,7 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
 
     db.form.findAll({where: where}).then(function (forms) {
         fullJSON = [];
-
+        console.log("here 1");
         forms.forEach(function (form) {
             form.getQuestions().then(function (questions) {
                 var questionsJSON = [];
@@ -43,9 +43,11 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
                 {
                     id: questionsJSON
                 }
+                console.log("here 2");
                 fullJSON.push(JSONObject);
             });
         });
+        console.log("here 3");
         res.json(fullJSON);
     }, function (e) {
         res.status(500).send();
