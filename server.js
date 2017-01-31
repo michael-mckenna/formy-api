@@ -51,9 +51,10 @@ app.get('/forms/:id', middleware.requireAuthentication, function (req, res) {
                 questions.forEach(function (question) {
                     questionsJSON.push(question.toJSON());
                 });
+                var id = form.id.toString();
                 var fullJSON =
                 {
-                    form.id.toString(): questionsJSON
+                    id: questionsJSON
                 }
                 res.json(fullJSON);
             });
