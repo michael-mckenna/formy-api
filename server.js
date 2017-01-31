@@ -59,11 +59,11 @@ app.get('/forms/:id', middleware.requireAuthentication, function (req, res) {
 app.post('/forms', middleware.requireAuthentication, function (req, res) {
     var body = req.body;
     var userId = req.user.get('id') || null;
+    var questions = [];
 
     console.log('The question count is: ' + body.questions.length);
     for(var i = 0; i < body.questions.length; i++) {
         var question = body.questions[i];
-
         var attributes = {};
         if (question.hasOwnProperty('type')) {
             console.log('THE TYPE IS: ' + question.type);
@@ -79,9 +79,10 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
         }
 
         db.question.create(attributes).then(function (question) {
-            console.log("successfully created question")
+            console.log("Successfully created question")
+            questions.push(question);
         }), function (e) {
-            res.status(400).json(e);
+            return res.status(400).json(e);
         }
     }
 
@@ -89,13 +90,21 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
         req.user.addForm(form).then(function () {
             //call reload updates the userId property on the form object
             //if we leave off reload, a call to the userId property will be null
-            return form.reload();
+            form.setQuestions(questions).then(function () {
+                console.log('TESTING WORD')
+                return form.reload();
+            }), function (e) {
+                console.log('FUCKKKKK')
+                res.status(400).json(e);
+            }
         }).then(function (form) {
+            console.log('Successfully saved form and added relationships');
             res.json(form.toJSON());
         });
     }, function (e) {
         res.status(400).json(e);
     });
+
 });
 
 // DELETE /todos/:id
