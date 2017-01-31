@@ -62,14 +62,11 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
 
     console.log('The question count is: ' + body.questions.length);
     for(var i = 0; i < body.questions.length; i++) {
-        console.log('QUESTION DATA IS: ' + body.questions[i]);
-        console.log('MAYBE TYPE PRINTS: ' + body.questions[i].type);
-    }
+        var question = body.questions[i];
 
-    for (var question in body.questions) {
-        console.log('THE QUESTION DATA IS: ' + question)
         var attributes = {};
         if (question.hasOwnProperty('type')) {
+            console.log('THE TYPE IS: ' + question.type);
             attributes.type = question.type;
         }
 
