@@ -91,11 +91,13 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
             //if we leave off reload, a call to the userId property will be null
             return form.reload();
         }).then(function (form) {
-            console.log('QUESTIONS LENGTH: ' + questions.length);
             form.setQuestions(questions).then(function () {
                 return form.reload();
             }).then(function (form) {
                 console.log('SUCCESSFULLY ADDED QUESTIONS TO FORM');
+                form.getQuestions().then(function (questions) {
+                    console.log('ASSOCIATED QUESTIONS LENGTH: ' + questions.length);
+                });
                 res.json(form.toJSON());
             });
         });
