@@ -61,9 +61,10 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
     var questions = _.pick(body, 'questions');
     var userId = req.user.get('id') || null;
 
-    questions.forEach(function (question) {
-        db.question.create(question);
-    })
+    console.log(body);
+    for (var key in questions) {
+        console.log("Got here");
+    }
 
     db.form.create(body).then(function (form) {
         req.user.addForm(form).then(function () {
