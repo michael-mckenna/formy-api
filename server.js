@@ -47,11 +47,15 @@ app.get('/forms/:id', middleware.requireAuthentication, function (req, res) {
     }).then(function (form) {
         if (form) {
             form.getQuestions().then(function (questions) {
-                var questionsJson = [];
+                var questionsJSON = [];
                 questions.forEach(function (question) {
-                    questionsJson.push(question.toJSON());
+                    questionsJSON.push(question.toJSON());
                 });
-                res.json(questionsJson);
+                var fullJSON =
+                {
+                    form.id.toString(): questionsJSON
+                }
+                res.json(fullJSON);
             });
         } else {
             res.status(404).send();
