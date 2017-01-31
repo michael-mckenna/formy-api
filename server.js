@@ -61,8 +61,9 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
     var questions = _.pick(body, 'questions');
     var userId = req.user.get('id') || null;
 
-    console.log(body);
+    console.log(questions);
     for (var question in questions) {
+        console.log(question);
         var attributes = {};
         if (question.hasOwnProperty('type')) {
             attributes.type = question.type;
