@@ -31,8 +31,6 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
 
     db.form.findAll({where: where}).then(function (forms) {
         fullJSON = [];
-        console.log("here 1");
-
         forms.forEach(function (form) {
             form.getQuestions().then(function (questions) {
                 var questionsJSON = [];
@@ -45,7 +43,6 @@ app.get('/forms', middleware.requireAuthentication, function (req, res) {
                     {
                         id: questionsJSON
                     }
-                    console.log("here 2");
                     fullJSON.push(JSONObject);
                     if (i === questions.length - 1) {
                         res.json(fullJSON);
@@ -112,9 +109,7 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
         }
 
         db.question.create(attributes).then(function (question) {
-            console.log("Successfully created question")
             questions.push(question);
-            console.log('QUESTIONS LENGTH ' + questions.length);
         }), function (e) {
             return res.status(400).json(e);
         }
@@ -129,9 +124,8 @@ app.post('/forms', middleware.requireAuthentication, function (req, res) {
             form.setQuestions(questions).then(function () {
                 return form.reload();
             }).then(function (form) {
-                console.log('SUCCESSFULLY ADDED QUESTIONS TO FORM');
                 form.getQuestions().then(function (questions) {
-                    console.log('ASSOCIATED QUESTIONS LENGTH: ' + questions.length);
+                    console.log('Successfully added questions to form');
                 });
                 res.json(form.toJSON());
             });
